@@ -58,7 +58,10 @@ std::pair<TreeSegment::Seq, TreeSegment::Tokens> encodeHuffmanTree(bitree<TreeNo
     TreeSegment::Tokens tokens;
     if (tree != nullptr) {
         std::stack<bitree<TreeNode>*> stk;
-        stk.push(tree);
+        if (!tree->isLeave()) {
+            stk.push(tree->getRightChild());
+            stk.push(tree->getLeftChild());
+        } else stk.push(tree);
         while (!stk.empty()) {
             bitree<TreeNode>* curTree = stk.top();
             stk.pop();
@@ -80,4 +83,43 @@ std::pair<TreeSegment::Seq, TreeSegment::Tokens> encodeHuffmanTree(bitree<TreeNo
     return make_pair(seq, tokens);
 }
 
-bitree<TreeNode>* decodeHuffmanTree(const TreeSegment::Seq&, const TreeSegment::Tokens&);
+bitree<TreeNode>* decodeHuffmanTree(const TreeSegment::Seq& seq, const TreeSegment::Tokens& tokens) {
+    auto tree = new bitree<TreeNode>(new TreeNode(0));
+    std::stack<int> stk;
+    int ind = 0;
+
+    auto curTree = tree;
+    stk.push(2);
+    for (auto tag: seq) {
+        if (stk.empty()) break;
+        if (tag == TreeSegment::SeqTag::RT) continue;
+        //
+        if (tag == TreeSegment::SeqTag::LF) {
+            auto newTree = new bitree<TreeNode>(new TreeNode(0));
+            if (stk.top() == 2) {
+                curTree->setLeftChild(newTree);
+            } else {
+                curTree->setRightChild(newTree);
+            }
+            curTree = newTree;
+        } else if (tag == TreeSegment::SeqTag::DATA) {
+            auto newTree = new bitree<TreeNode>(new TreeNode(tokens[ind++], 0));
+            if (stk.top() == 2) {
+                curTree->setLeftChild(newTree);
+            } else {
+                curTree->setRightChild(newTree);
+            }
+        }
+        --stk.top();
+        while (!stk.empty() && stk.top() == 0) {
+            stk.pop();
+            if (tag == TreeSegment::SeqTag::DATA)
+                curTree = curTree->getFather();
+        }
+        if (tag == TreeSegment::SeqTag::LF) {
+            stk.push(2);
+        }
+    }
+    if (!stk.empty()) return nullptr;
+    return tree;
+}

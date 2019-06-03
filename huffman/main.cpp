@@ -40,6 +40,10 @@ int main() {
         cout << it.first << ": " << it.second << endl;
     }
     auto p = encodeHuffmanTree(huffman);
+    auto *pp = decodeHuffmanTree(p.first, p.second);
+    for (auto it: buildDictionary(pp)) {
+        cout << it.first << ": " << it.second << endl;
+    }
 
     int partCnt;
 
