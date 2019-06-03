@@ -63,6 +63,8 @@ public:
 
     T* getData();
 
+    bool isLeave();
+
     static std::string dlr(bitree<T> *);
 
     static std::string ldr(bitree<T> *);

@@ -87,6 +87,8 @@ struct CodePoint {
 
     CodePoint &addBitHSB(Bit bit);
 
+    CodePoint &addBitLSB(Bit bit);
+
     Bit operator[](int ind) const;
 
     friend std::ostream & operator<<(std::ostream &, const CodePoint&);

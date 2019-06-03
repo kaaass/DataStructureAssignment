@@ -333,6 +333,11 @@ bitree<T> *bitree<T>::getRightChild() {
 }
 
 template<typename T>
+bool bitree<T>::isLeave() {
+    return lf == nullptr && rt == nullptr;
+}
+
+template<typename T>
 bool SeqTag<T>::isPlaceHolder() {
     return type == PlaceHolder;
 }

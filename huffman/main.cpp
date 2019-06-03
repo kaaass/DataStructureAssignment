@@ -5,6 +5,7 @@
 #include "DataType.h"
 #include "FileStructure.h"
 #include "HashUtil.h"
+#include "Huffman.h"
 
 using namespace std;
 
@@ -26,6 +27,19 @@ int main() {
         cout << bbbb;
     }
     cout << endl;*/
+
+    std::map<UChar, int> charCnt;
+    charCnt['a'] = 3;
+    charCnt['b'] = 4;
+    charCnt['c'] = 5;
+    charCnt['d'] = 6;
+    charCnt['e'] = 10;
+    auto *huffman = buildHuffman(charCnt);
+    auto mapp = buildDictionary(huffman);
+    for (auto it: mapp) {
+        cout << it.first << ": " << it.second << endl;
+    }
+
     int partCnt;
 
     vector<char> tokens = {'a', 'b', 'c'};

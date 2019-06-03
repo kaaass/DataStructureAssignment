@@ -94,6 +94,20 @@ std::ostream &operator<<(std::ostream &out, const CodePoint &point) {
     return out;
 }
 
+CodePoint &CodePoint::addBitLSB(Bit bit) {
+    if (length % 8 == 0) {
+        bytes.emplace_back(0);
+    }
+    for (int i = bytes.size() - 1; i > 0; i--) {
+        bytes[i] = bytes[i] << 1;
+        bytes[i].bits.b0 = bytes[i - 1][7];
+    }
+    bytes[0] = bytes[0] << 1;
+    bytes[0].bits.b0 = bit;
+    length++;
+    return *this;
+}
+
 UInt32::UInt32(unsigned int val) {
     uintToBytes(val, bytes);
 }
