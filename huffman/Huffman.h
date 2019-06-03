@@ -8,7 +8,7 @@
 #include "DataType.h"
 #include "FileStructure.h"
 #include "../assignment3/bitree.h"
-#include <map>
+#include <unordered_map>
 
 struct TreeNode {
     UChar data;
@@ -18,9 +18,9 @@ struct TreeNode {
     TreeNode(int weight): TreeNode(0, weight) {}
 };
 
-bitree<TreeNode>* buildHuffman(const std::map<UChar, int>& charCnt);
+bitree<TreeNode>* buildHuffman(const std::unordered_map<UChar, int>& charCnt);
 
-std::map<UChar, CodePoint> buildDictionary(bitree<TreeNode> *tree);
+std::unordered_map<UChar, CodePoint> buildDictionary(bitree<TreeNode> *tree);
 
 bool matchNext(bitree<TreeNode> *tree, std::vector<Byte> bytes, UChar &ret, BIndex &pos);
 

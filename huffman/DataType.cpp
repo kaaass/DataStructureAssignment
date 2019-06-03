@@ -83,7 +83,7 @@ std::vector<Byte> CodePoint::pack(const std::vector<CodePoint> &points, int &pad
             cnt++;
         }
     }
-    padInt = 8 - (cnt % 8);
+    padInt = (8 - (cnt % 8)) % 8;
     return bytes;
 }
 

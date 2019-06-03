@@ -1,6 +1,6 @@
 set(libs
         ../assignment3/bitree.h
-        ../assignment3/bitree.hpp Huffman.cpp Huffman.h)
+        ../assignment3/bitree.hpp)
 
-add_executable(huffman ${libs} main.cpp DataType.cpp DataType.h Config.h Config.cpp FileStructure.cpp FileStructure.h HashUtil.cpp HashUtil.h)
+add_executable(huffman ${libs} main.cpp DataType.cpp DataType.h Config.h Config.cpp FileStructure.cpp FileStructure.h HashUtil.cpp HashUtil.h Huffman.cpp Huffman.h Compress.cpp Compress.h)
 target_link_libraries(huffman uiLib)

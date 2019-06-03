@@ -4,7 +4,7 @@
 
 #include "Huffman.h"
 
-bitree<TreeNode>* buildHuffman(const std::map<UChar, int>& charCnt) {
+bitree<TreeNode>* buildHuffman(const std::unordered_map<UChar, int>& charCnt) {
     std::priority_queue<std::pair<int, bitree<TreeNode>*>> forest;
 
     if (charCnt.empty())
@@ -28,8 +28,8 @@ bitree<TreeNode>* buildHuffman(const std::map<UChar, int>& charCnt) {
     return forest.top().second;
 }
 
-std::map<UChar, CodePoint> buildDictionary(bitree<TreeNode> *tree) {
-    std::map<UChar, CodePoint> map;
+std::unordered_map<UChar, CodePoint> buildDictionary(bitree<TreeNode> *tree) {
+    std::unordered_map<UChar, CodePoint> map;
     if (tree == nullptr) return map;
     // DFS
     std::stack<std::pair<CodePoint, bitree<TreeNode>*>> stk;
@@ -62,6 +62,8 @@ bool matchNext(bitree<TreeNode> *tree, std::vector<Byte> bytes, UChar &ret, BInd
         } else {
             tree = tree->getRightChild();
         }
+        if (tree == nullptr)
+            return false;
         if (tree->isLeave()) {
             ret = tree->getData()->data;
             return true;
@@ -105,30 +107,28 @@ bitree<TreeNode>* decodeHuffmanTree(const TreeSegment::Seq& seq, const TreeSegme
     for (auto tag: seq) {
         if (stk.empty()) break;
         //
+        --stk.top();
         if (tag == TreeSegment::SeqTag::ST) {
             auto newTree = new bitree<TreeNode>(new TreeNode(0));
-            if (stk.top() == 2) {
+            if (stk.top() == 1) {
                 curTree->setLeftChild(newTree);
             } else {
                 curTree->setRightChild(newTree);
             }
             curTree = newTree;
+            stk.push(2);
+            continue;
         } else if (tag == TreeSegment::SeqTag::DATA) {
             auto newTree = new bitree<TreeNode>(new TreeNode(tokens[ind++], 0));
-            if (stk.top() == 2) {
+            if (stk.top() == 1) {
                 curTree->setLeftChild(newTree);
             } else {
                 curTree->setRightChild(newTree);
             }
         }
-        --stk.top();
         while (!stk.empty() && stk.top() == 0) {
             stk.pop();
-            if (tag == TreeSegment::SeqTag::DATA)
-                curTree = curTree->getFather();
-        }
-        if (tag == TreeSegment::SeqTag::ST) {
-            stk.push(2);
+            curTree = curTree->getFather();
         }
     }
     if (!stk.empty()) return nullptr;
