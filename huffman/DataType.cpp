@@ -142,3 +142,35 @@ unsigned int UInt32::byteToUint(const Byte (&bytes)[4]) {
     }
     return ret;
 }
+
+void UInt16::uintToBytes(unsigned short uintVal, Byte (&bytes)[2]) {
+    for (int i = 0; i < 2; i++) {
+        bytes[1 - i] = uintVal;
+        uintVal >>= (unsigned) 8;
+    }
+}
+
+unsigned short UInt16::byteToUint(const Byte (&bytes)[2]) {
+    unsigned int ret = 0;
+    for (int i = 0; i < 2; i++) {
+        ret |= bytes[1 - i] << 8 * i;
+    }
+    return ret;
+}
+
+UInt16::UInt16(unsigned short val) {
+    uintToBytes(val, bytes);
+}
+
+UInt16::operator unsigned short() {
+    return byteToUint(bytes);
+}
+
+UInt16 &UInt16::operator=(unsigned short val) {
+    uintToBytes(val, bytes);
+    return *this;
+}
+
+std::vector<Byte> UInt16::toVector() {
+    return std::vector<Byte>(bytes, bytes + 2);
+}

@@ -13,8 +13,8 @@
 // #define MEM_LITLLE_ENDIAN
 #define FILE_BIG_ENDIAN
 
-#define MAX_DATA_BLOCK_SIZE 255
-#define MAX_TREE_SEG_SIZE 255
+#define MAX_DATA_BLOCK_SIZE 65535
+#define MAX_TREE_SEG_SIZE 256
 
 class Config {
 public:

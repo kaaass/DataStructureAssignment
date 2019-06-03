@@ -53,9 +53,9 @@ struct DataPartHeader {
  *  header: 8 bits
  *   - seqLength 8 bits: bytes count in seqData
  *   - tokenLength 8 bits: bytes count in dicData
- *  body: seqLength + tokenLength bytes
- *   - seqData
- *   - dicData
+ *  body: seqLength + tokenLength + 1 bytes
+ *   - seqData seqLength bytes
+ *   - dicData tokenLength + 1 bytes
  *  checksum: crc32 32 bits
  */
 class TreeSegment {
@@ -82,9 +82,9 @@ public:
 
 /**
  * Structure:
- * header: 8 bits
- *  - length 8 bits: bytes count in block
- * body: length * 8 bits
+ * header: 2 bytes
+ *  - length 2 bytes: bytes count in block
+ * body: length + 1 bytes
  * checksum: crc32 32 bits
  */
 class DataSegment {

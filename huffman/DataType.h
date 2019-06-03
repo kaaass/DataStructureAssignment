@@ -71,6 +71,26 @@ public:
     std::vector<Byte> toVector();
 };
 
+class UInt16 {
+    Byte bytes[2];
+
+    static void uintToBytes(unsigned short, Byte (&bytes)[2]);
+
+    static unsigned short byteToUint(const Byte (&bytes)[2]);
+public:
+    UInt16() {
+        bytes[0] = bytes[1] = 0x00;
+    }
+
+    UInt16(unsigned short val);
+
+    operator unsigned short();
+
+    UInt16& operator = (unsigned short val);
+
+    std::vector<Byte> toVector();
+};
+
 typedef unsigned char UChar;
 
 struct CodePoint {

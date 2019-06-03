@@ -12,14 +12,19 @@ std::vector<Byte> DataSegment::splitBlocks(const std::vector<Byte> &rawBytes, in
     auto it = rawBytes.begin();
     blockCnt = 0;
     UInt32 checksum;
+    UInt16 blockLen;
     while (used < rawBytes.size()) {
         if (rawBytes.size() - used < MAX_DATA_BLOCK_SIZE) {
-            ret.emplace_back((unsigned char) (rawBytes.size() - used));
+            blockLen = rawBytes.size() - used;
+            auto len = blockLen.toVector();
+            ret.insert(ret.end(), len.begin(), len.end());
             ret.insert(ret.end(), it, rawBytes.end());
             checksum = Crc32::get(it.base(), rawBytes.size() - used);
             used = rawBytes.size();
         } else {
-            ret.emplace_back((unsigned char) MAX_DATA_BLOCK_SIZE);
+            blockLen = MAX_DATA_BLOCK_SIZE;
+            auto len = blockLen.toVector();
+            ret.insert(ret.end(), len.begin(), len.end());
             ret.insert(ret.end(), it, std::next(it, MAX_DATA_BLOCK_SIZE));
             checksum = Crc32::get(it.base(), MAX_DATA_BLOCK_SIZE);
             std::advance(it, MAX_DATA_BLOCK_SIZE);
@@ -43,8 +48,8 @@ std::vector<Byte> DataSegment::readRawFromBuf(FILE *buf, int blockCnt) {
     Byte *bBuf = new Byte[MAX_DATA_BLOCK_SIZE];
     int cnt = 0;
     while (blockCnt > 0 && !feof(buf)) {
-        unsigned char size;
-        fread(&size, 1, 1, buf);
+        UInt16 size;
+        fread(&size, 2, 1, buf);
         fread(bBuf, 1, size, buf);
         rawBytes.insert(rawBytes.end(), bBuf, bBuf + size);
         UInt32 checksum;
@@ -105,7 +110,7 @@ std::vector<Byte> TreeSegment::packTokens(const Tokens &tokens) {
 
 std::vector<Byte> TreeSegment::packToBlock(const std::vector<Byte> &tagBytes, const std::vector<Byte> &tokenBytes) {
     std::vector<Byte> ret;
-    Byte seqLength = tagBytes.size(), tokenLength = tokenBytes.size();
+    Byte seqLength = tagBytes.size(), tokenLength = tokenBytes.size() - 1;
     ret.push_back(seqLength);
     ret.push_back(tokenLength);
     ret.insert(ret.end(), tagBytes.begin(), tagBytes.end());
@@ -130,11 +135,13 @@ std::pair<TreeSegment::Seq, TreeSegment::Tokens> TreeSegment::readFromBuf(FILE *
     TreeSegment::Seq seqTags;
     TreeSegment::Tokens tokens;
     Byte *bBuf = new Byte[MAX_TREE_SEG_SIZE];
-    unsigned char seqLength, tokenLength;
+    unsigned char seqLength, tokenLen;
+    unsigned int tokenLength;
     UInt32 calcCrc32;
 
     fread(&seqLength, 1, 1, buf);
-    fread(&tokenLength, 1, 1, buf);
+    fread(&tokenLen, 1, 1, buf);
+    tokenLength = tokenLen + 1;
     // Read seq
     fread(bBuf, 1, seqLength, buf);
     int used = 0, dtTagCnt = 0;
