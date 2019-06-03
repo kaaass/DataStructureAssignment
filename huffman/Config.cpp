@@ -7,8 +7,11 @@
 #include "DataType.h"
 
 bool Config::isMemBigEndian() {
-    Byte byte = 0b00000001;
-    return !byte.bits.b0;
+    union {
+        int intVal;
+        char byte;
+    } memChecker {.intVal = 1};
+    return memChecker.byte != 1;
 }
 
 void Config::checkEndianConfig() {
