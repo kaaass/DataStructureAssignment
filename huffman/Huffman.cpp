@@ -58,7 +58,7 @@ std::unordered_map<UChar, CodePoint> buildDictionary(bitree<TreeNode> *tree) {
     return map;
 }
 
-bool matchNext(bitree<TreeNode> *tree, std::vector<Byte> bytes, UChar &ret, BIndex &pos) {
+bool matchNext(bitree<TreeNode> *tree, const vector<Byte> &bytes, UChar &ret, BIndex &pos) {
     if (tree == nullptr) return false;
     if (tree->isLeave()) {
         pos++;

@@ -77,9 +77,9 @@ struct CodePoint {
     std::vector<Byte> bytes;
     int length;
 
-    CodePoint() : length(0) {}
+    CodePoint() : length(0), bytes(2) {}
 
-    CodePoint(Byte byte, int len) : length(len) { bytes.push_back(byte); }
+    CodePoint(Byte byte, int len) : length(len), bytes(2) { bytes.push_back(byte); }
 
     CodePoint(Byte byte) : CodePoint(byte, 8) {}
 

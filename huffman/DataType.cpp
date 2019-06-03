@@ -61,7 +61,8 @@ CodePoint &CodePoint::addByteHSB(Byte byte) {
 
 CodePoint &CodePoint::addBitHSB(Bit bit) {
     if (length % 8 == 0)
-        bytes.emplace_back(0);
+        if (length / 8 > bytes.size())
+            bytes.emplace_back(0);
     bytes[length / 8].val |= ((unsigned char) bit & 1) << (length % 8);
     length++;
     return *this;
@@ -95,9 +96,9 @@ std::ostream &operator<<(std::ostream &out, const CodePoint &point) {
 }
 
 CodePoint &CodePoint::addBitLSB(Bit bit) {
-    if (length % 8 == 0) {
-        bytes.emplace_back(0);
-    }
+    if (length % 8 == 0)
+        if (length / 8 > bytes.size())
+            bytes.emplace_back(0);
     for (int i = bytes.size() - 1; i > 0; i--) {
         bytes[i] = bytes[i] << 1;
         bytes[i].bits.b0 = bytes[i - 1][7];
