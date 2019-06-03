@@ -31,6 +31,13 @@ bitree<TreeNode>* buildHuffman(const std::unordered_map<UChar, int>& charCnt) {
 std::unordered_map<UChar, CodePoint> buildDictionary(bitree<TreeNode> *tree) {
     std::unordered_map<UChar, CodePoint> map;
     if (tree == nullptr) return map;
+    //
+    if (tree->isLeave()) {
+        CodePoint zero;
+        zero.addBitHSB(0);
+        map[tree->getData()->data] = zero;
+        return map;
+    }
     // DFS
     std::stack<std::pair<CodePoint, bitree<TreeNode>*>> stk;
     stk.push(make_pair(CodePoint(), tree));
@@ -52,8 +59,12 @@ std::unordered_map<UChar, CodePoint> buildDictionary(bitree<TreeNode> *tree) {
 }
 
 bool matchNext(bitree<TreeNode> *tree, std::vector<Byte> bytes, UChar &ret, BIndex &pos) {
-    UChar ch = 0;
     if (tree == nullptr) return false;
+    if (tree->isLeave()) {
+        pos++;
+        ret = tree->getData()->data;
+        return true;
+    }
     while (pos / 8 < bytes.size()) {
         Bit bit = bytes[pos / 8][7 - pos % 8];
         pos++;
@@ -102,6 +113,14 @@ bitree<TreeNode>* decodeHuffmanTree(const TreeSegment::Seq& seq, const TreeSegme
     std::stack<int> stk;
     int ind = 0;
 
+    if (seq.size() == 1) {
+        if (seq[0] == TreeSegment::SeqTag::DATA) {
+            tree->getData()->data = tokens[0];
+            return tree;
+        } else {
+            return nullptr;
+        }
+    }
     auto curTree = tree;
     stk.push(2);
     for (auto tag: seq) {
