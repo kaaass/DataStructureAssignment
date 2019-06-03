@@ -4,18 +4,21 @@
 
 #include "Compress.h"
 
-std::unordered_map<UChar, int> countCharBuf(FILE *buf) {
+std::unordered_map<UChar, int> countCharBuf(FILE *buf, BIndex &fileSize) {
     std::unordered_map<UChar, int> ret;
     UChar ch;
+    fileSize = 0;
     while (fread(&ch, 1, 1, buf)) {
         ret[ch]++;
+        fileSize++;
     }
     return ret;
 }
 
-std::vector<Byte> compressBufWithTree(FILE *buf, bitree<TreeNode> *tree, int &padCnt) {
+std::vector<Byte> compressBufWithTree(FILE *buf, bitree<TreeNode> *tree, int &padCnt, BIndex fileSize) {
     auto dict = buildDictionary(tree);
     std::vector<CodePoint> ret;
+    ret.reserve(fileSize);
     UChar ch;
     while (fread(&ch, 1, 1, buf)) {
         ret.push_back(dict[ch]);
@@ -31,7 +34,8 @@ bool compressAndSave(FILE *buf, FILE *writeBuf) {
     // - End of header
     DataPart dataPart;
     // Gene Tree
-    auto counts = countCharBuf(buf);
+    BIndex fileSize;
+    auto counts = countCharBuf(buf, fileSize);
     rewind(buf);
     auto *tree = buildHuffman(counts);
     if (tree == nullptr)
@@ -41,7 +45,7 @@ bool compressAndSave(FILE *buf, FILE *writeBuf) {
     dataPart.setTokens(treeData.second);
     // Compress & Pack data
     int padCnt;
-    auto bytes = compressBufWithTree(buf, tree, padCnt);
+    auto bytes = compressBufWithTree(buf, tree, padCnt, fileSize);
     dataPart.setRawData(bytes);
     dataPart.setPadCnt(padCnt);
     dataPart.writeToBuf(writeBuf);

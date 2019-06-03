@@ -13,9 +13,9 @@
  * TODO: Read & Write big file with chunk
  */
 
-std::unordered_map<UChar, int> countCharBuf(FILE *buf);
+std::unordered_map<UChar, int> countCharBuf(FILE *buf, BIndex &fileSize);
 
-std::vector<Byte> compressBufWithTree(FILE *buf, bitree<TreeNode> *tree, int &padCnt);
+std::vector<Byte> compressBufWithTree(FILE *buf, bitree<TreeNode> *tree, int &padCnt, BIndex fileSize);
 
 bool compressAndSave(FILE *buf, FILE *writeBuf);
 

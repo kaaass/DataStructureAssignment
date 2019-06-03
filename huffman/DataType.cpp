@@ -75,6 +75,7 @@ Bit CodePoint::operator[](int ind) const {
 
 std::vector<Byte> CodePoint::pack(const std::vector<CodePoint> &points, int &padInt) {
     std::vector<Byte> bytes;
+    bytes.reserve(points.size());
     int cnt = 0;
     for (auto point: points) {
         for (int i = point.length - 1; i >= 0; i--) {
@@ -85,6 +86,7 @@ std::vector<Byte> CodePoint::pack(const std::vector<CodePoint> &points, int &pad
         }
     }
     padInt = (8 - (cnt % 8)) % 8;
+    bytes.shrink_to_fit();
     return bytes;
 }
 

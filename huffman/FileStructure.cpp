@@ -89,6 +89,7 @@ HuffmanHeader *HuffmanHeader::readFromBuf(FILE *buf) {
 
 std::vector<Byte> TreeSegment::packSeq(const Seq &seq) {
     std::vector<Byte> ret;
+    ret.reserve(seq.size() / 4);
     for (int i = 0; i < seq.size(); i++) {
         if (i % 4 == 0)
             ret.emplace_back(0); // Pad with zero
