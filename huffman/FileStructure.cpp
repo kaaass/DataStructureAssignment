@@ -87,7 +87,7 @@ HuffmanHeader *HuffmanHeader::readFromBuf(FILE *buf) {
     return ret;
 }
 
-std::vector<Byte> TreeSegment::packSeq(const std::vector<SeqTag> &seq) {
+std::vector<Byte> TreeSegment::packSeq(const Seq &seq) {
     std::vector<Byte> ret;
     for (int i = 0; i < seq.size(); i++) {
         if (i % 4 == 0)
@@ -97,7 +97,7 @@ std::vector<Byte> TreeSegment::packSeq(const std::vector<SeqTag> &seq) {
     return ret;
 }
 
-std::vector<Byte> TreeSegment::packTokens(const std::vector<char> &tokens) {
+std::vector<Byte> TreeSegment::packTokens(const Tokens &tokens) {
     std::vector<Byte> ret(tokens.begin(), tokens.end());
     return ret;
 }
@@ -116,7 +116,7 @@ std::vector<Byte> TreeSegment::packToBlock(const std::vector<Byte> &tagBytes, co
 }
 
 int
-TreeSegment::writeRawToBuf(FILE *buf, const std::vector<TreeSegment::SeqTag> &tagSeq, const std::vector<char> &tokens) {
+TreeSegment::writeRawToBuf(FILE *buf, const Seq &tagSeq, const Tokens &tokens) {
     auto seqBytes = packSeq(tagSeq);
     auto tokenBytes = packTokens(tokens);
     std::vector<Byte> block = packToBlock(seqBytes, tokenBytes);
@@ -125,9 +125,9 @@ TreeSegment::writeRawToBuf(FILE *buf, const std::vector<TreeSegment::SeqTag> &ta
     return 1;
 }
 
-std::pair<std::vector<TreeSegment::SeqTag>, std::vector<char>> TreeSegment::readFromBuf(FILE *buf) {
-    std::vector<TreeSegment::SeqTag> seqTags;
-    std::vector<char> tokens;
+std::pair<TreeSegment::Seq, TreeSegment::Tokens> TreeSegment::readFromBuf(FILE *buf) {
+    TreeSegment::Seq seqTags;
+    TreeSegment::Tokens tokens;
     Byte *bBuf = new Byte[MAX_TREE_SEG_SIZE];
     unsigned char seqLength, tokenLength;
     UInt32 calcCrc32;
@@ -198,19 +198,19 @@ void DataPart::setRawData(const std::vector<Byte> &rawData) {
     DataPart::pRawData = rawData;
 }
 
-const std::vector<TreeSegment::SeqTag> &DataPart::getSeq() const {
+const TreeSegment::Seq &DataPart::getSeq() const {
     return pSeq;
 }
 
-void DataPart::setSeq(const std::vector<TreeSegment::SeqTag> &seq) {
+void DataPart::setSeq(const TreeSegment::Seq &seq) {
     DataPart::pSeq = seq;
 }
 
-const std::vector<char> &DataPart::getTokens() const {
+const TreeSegment::Tokens &DataPart::getTokens() const {
     return pTokens;
 }
 
-void DataPart::setTokens(const std::vector<char> &tokens) {
+void DataPart::setTokens(const TreeSegment::Tokens &tokens) {
     DataPart::pTokens = tokens;
 }
 

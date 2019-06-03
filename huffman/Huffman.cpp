@@ -53,6 +53,31 @@ std::map<UChar, CodePoint> buildDictionary(bitree<TreeNode> *tree) {
 
 UChar matchNext(const bitree<TreeNode>*, std::vector<Byte>, int& pos);
 
-std::pair<std::vector<TreeSegment::SeqTag>, std::vector<char>> encodeHuffmanTree(const bitree<TreeNode>*);
+std::pair<TreeSegment::Seq, TreeSegment::Tokens> encodeHuffmanTree(bitree<TreeNode> *tree) {
+    TreeSegment::Seq seq;
+    TreeSegment::Tokens tokens;
+    if (tree != nullptr) {
+        std::stack<bitree<TreeNode>*> stk;
+        stk.push(tree);
+        while (!stk.empty()) {
+            bitree<TreeNode>* curTree = stk.top();
+            stk.pop();
+            if (curTree == nullptr) {
+                seq.push_back(TreeSegment::SeqTag::RT);
+                continue;
+            }
+            if (curTree->isLeave()) {
+                seq.push_back(TreeSegment::SeqTag::DATA);
+                tokens.push_back(curTree->getData()->data);
+                continue;
+            }
+            seq.push_back(TreeSegment::SeqTag::LF);
+            stk.push(nullptr);
+            stk.push(curTree->getRightChild());
+            stk.push(curTree->getLeftChild());
+        }
+    }
+    return make_pair(seq, tokens);
+}
 
-bitree<TreeNode>* decodeHuffmanTree(const std::vector<TreeSegment::SeqTag>&, const std::vector<char>&);
+bitree<TreeNode>* decodeHuffmanTree(const TreeSegment::Seq&, const TreeSegment::Tokens&);

@@ -26,7 +26,7 @@ struct HuffmanHeader {
 
     void writeToBuf(FILE *buf);
 
-    static HuffmanHeader * readFromBuf(FILE *buf);
+    static HuffmanHeader *readFromBuf(FILE *buf);
 };
 
 /**
@@ -40,11 +40,12 @@ struct DataPartHeader {
     UInt32 blockCnt;
 
     DataPartHeader() : DataPartHeader(0, 0) {}
+
     DataPartHeader(Byte, UInt32);
 
     void writeToBuf(FILE *buf);
 
-    static DataPartHeader * readFromBuf(FILE *buf);
+    static DataPartHeader *readFromBuf(FILE *buf);
 };
 
 /**
@@ -63,17 +64,20 @@ public:
         LF = 0b01, DATA = 0b10, RT = 0b11, END = 0b00
     };
 
+    typedef std::vector<SeqTag> Seq;
+    typedef std::vector<UChar> Tokens;
+
     static TreeSegment::SeqTag byteToTag(Byte);
 
-    static std::vector<Byte> packSeq(const std::vector<SeqTag> &);
+    static std::vector<Byte> packSeq(const Seq &);
 
-    static std::vector<Byte> packTokens(const std::vector<char> &);
+    static std::vector<Byte> packTokens(const Tokens &);
 
     static std::vector<Byte> packToBlock(const std::vector<Byte> &tagBytes, const std::vector<Byte> &tokenBytes);
 
-    static int writeRawToBuf(FILE *buf, const std::vector<SeqTag> &tagSeq, const std::vector<char> &tokens);
+    static int writeRawToBuf(FILE *buf, const Seq &tagSeq, const Tokens &tokens);
 
-    static std::pair<std::vector<SeqTag>, std::vector<char>> readFromBuf(FILE *buf);
+    static std::pair<TreeSegment::Seq, TreeSegment::Tokens> readFromBuf(FILE *buf);
 };
 
 /**
@@ -98,10 +102,10 @@ public:
 class DataPart {
     UChar padCnt;
     std::vector<Byte> pRawData;
-    std::vector<TreeSegment::SeqTag> pSeq;
-    std::vector<char> pTokens;
+    TreeSegment::Seq pSeq;
+    TreeSegment::Tokens pTokens;
 public:
-    DataPart(): padCnt(0b0) {}
+    DataPart() : padCnt(0b0) {}
 
     void writeToBuf(FILE *buf);
 
@@ -115,13 +119,13 @@ public:
 
     void setRawData(const std::vector<Byte> &rawData);
 
-    const std::vector<TreeSegment::SeqTag> &getSeq() const;
+    const TreeSegment::Seq &getSeq() const;
 
-    void setSeq(const std::vector<TreeSegment::SeqTag> &seq);
+    void setSeq(const TreeSegment::Seq &seq);
 
-    const std::vector<char> &getTokens() const;
+    const TreeSegment::Tokens &getTokens() const;
 
-    void setTokens(const std::vector<char> &tokens);
+    void setTokens(const TreeSegment::Tokens &tokens);
 
     UChar getPadCnt() const;
 

@@ -24,8 +24,8 @@ std::map<UChar, CodePoint> buildDictionary(bitree<TreeNode> *tree);
 
 UChar matchNext(const bitree<TreeNode>*, std::vector<Byte>, int& pos);
 
-std::pair<std::vector<TreeSegment::SeqTag>, std::vector<char>> encodeHuffmanTree(const bitree<TreeNode>*);
+std::pair<TreeSegment::Seq, TreeSegment::Tokens> encodeHuffmanTree(bitree<TreeNode> *tree);
 
-bitree<TreeNode>* decodeHuffmanTree(const std::vector<TreeSegment::SeqTag>&, const std::vector<char>&);
+bitree<TreeNode>* decodeHuffmanTree(const TreeSegment::Seq&, const TreeSegment::Tokens&);
 
 #endif //DATA_STRCUT_ASSIGN_HUFFMAN_H

@@ -19,7 +19,7 @@ int main() {
     }
     vector<CodePoint> points{point, CodePoint(0b00000000), point};
 
-    vector<TreeSegment::SeqTag> seq = {TreeSegment::SeqTag::DATA, TreeSegment::SeqTag::LF, TreeSegment::SeqTag::DATA,
+    TreeSegment::Seq seq = {TreeSegment::SeqTag::DATA, TreeSegment::SeqTag::LF, TreeSegment::SeqTag::DATA,
                                        TreeSegment::SeqTag::DATA, TreeSegment::SeqTag::RT}; // 1001101011
 
     /*auto bbb =  TreeSegment::packSeq(seq);
@@ -39,10 +39,11 @@ int main() {
     for (auto it: mapp) {
         cout << it.first << ": " << it.second << endl;
     }
+    auto p = encodeHuffmanTree(huffman);
 
     int partCnt;
 
-    vector<char> tokens = {'a', 'b', 'c'};
+    TreeSegment::Tokens tokens = {'a', 'b', 'c'};
     //
     FILE *file = fopen("test.huf", "wb");
 
