@@ -61,7 +61,7 @@ struct DataPartHeader {
 class TreeSegment {
 public:
     enum SeqTag {
-        LF = 0b01, DATA = 0b10, RT = 0b11, END = 0b00
+        ST = 0b01, DATA = 0b10, END = 0b00
     };
 
     typedef std::vector<SeqTag> Seq;

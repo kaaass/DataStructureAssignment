@@ -164,10 +164,8 @@ std::pair<TreeSegment::Seq, TreeSegment::Tokens> TreeSegment::readFromBuf(FILE *
 
 TreeSegment::SeqTag TreeSegment::byteToTag(Byte byte) {
     unsigned char val = byte & 0b11;
-    if (val == LF)
-        return LF;
-    if (val == RT)
-        return RT;
+    if (val == ST)
+        return ST;
     if (val == DATA)
         return DATA;
     return END;

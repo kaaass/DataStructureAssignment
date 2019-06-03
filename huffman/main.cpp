@@ -19,8 +19,8 @@ int main() {
     }
     vector<CodePoint> points{point, CodePoint(0b00000000), point};
 
-    TreeSegment::Seq seq = {TreeSegment::SeqTag::DATA, TreeSegment::SeqTag::LF, TreeSegment::SeqTag::DATA,
-                                       TreeSegment::SeqTag::DATA, TreeSegment::SeqTag::RT}; // 1001101011
+    TreeSegment::Seq seq = {TreeSegment::SeqTag::DATA, TreeSegment::SeqTag::ST, TreeSegment::SeqTag::DATA,
+                                       TreeSegment::SeqTag::DATA}; // 1001101011
 
     /*auto bbb =  TreeSegment::packSeq(seq);
     for (auto bbbb : bbb) {
@@ -29,11 +29,12 @@ int main() {
     cout << endl;*/
 
     std::map<UChar, int> charCnt;
-    charCnt['a'] = 3;
-    charCnt['b'] = 4;
+    charCnt['a'] = 5;
+    charCnt['b'] = 6;
     charCnt['c'] = 5;
-    charCnt['d'] = 6;
+    charCnt['d'] = 2;
     charCnt['e'] = 10;
+    charCnt['f'] = 9;
     auto *huffman = buildHuffman(charCnt);
     auto mapp = buildDictionary(huffman);
     for (auto it: mapp) {
@@ -43,6 +44,13 @@ int main() {
     auto *pp = decodeHuffmanTree(p.first, p.second);
     for (auto it: buildDictionary(pp)) {
         cout << it.first << ": " << it.second << endl;
+    }
+    UChar ret;
+    BIndex pos = 0;
+    std::vector<Byte> data = {0b11011000, 0b10001000, 0b10100000};
+    while ((pos + 5) / 8 < data.size()) {
+        matchNext(huffman, data, ret, pos);
+        cout << ret << endl;
     }
 
     int partCnt;

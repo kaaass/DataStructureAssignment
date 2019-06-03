@@ -22,7 +22,7 @@ bitree<TreeNode>* buildHuffman(const std::map<UChar, int>& charCnt);
 
 std::map<UChar, CodePoint> buildDictionary(bitree<TreeNode> *tree);
 
-UChar matchNext(const bitree<TreeNode>*, std::vector<Byte>, int& pos);
+bool matchNext(bitree<TreeNode> *tree, std::vector<Byte> bytes, UChar &ret, BIndex &pos);
 
 std::pair<TreeSegment::Seq, TreeSegment::Tokens> encodeHuffmanTree(bitree<TreeNode> *tree);
 

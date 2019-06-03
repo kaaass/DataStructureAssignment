@@ -96,4 +96,6 @@ struct CodePoint {
     static std::vector<Byte> pack(const std::vector<CodePoint> &points, int &padInt);
 };
 
+typedef unsigned long long BIndex;
+
 #endif //DATA_STRCUT_ASSIGN_DATATYPE_H

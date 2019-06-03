@@ -51,7 +51,24 @@ std::map<UChar, CodePoint> buildDictionary(bitree<TreeNode> *tree) {
     return map;
 }
 
-UChar matchNext(const bitree<TreeNode>*, std::vector<Byte>, int& pos);
+bool matchNext(bitree<TreeNode> *tree, std::vector<Byte> bytes, UChar &ret, BIndex &pos) {
+    UChar ch = 0;
+    if (tree == nullptr) return false;
+    while (pos / 8 < bytes.size()) {
+        Bit bit = bytes[pos / 8][7 - pos % 8];
+        pos++;
+        if (!bit) {
+            tree = tree->getLeftChild();
+        } else {
+            tree = tree->getRightChild();
+        }
+        if (tree->isLeave()) {
+            ret = tree->getData()->data;
+            return true;
+        }
+    }
+    return false;
+}
 
 std::pair<TreeSegment::Seq, TreeSegment::Tokens> encodeHuffmanTree(bitree<TreeNode> *tree) {
     TreeSegment::Seq seq;
@@ -65,17 +82,12 @@ std::pair<TreeSegment::Seq, TreeSegment::Tokens> encodeHuffmanTree(bitree<TreeNo
         while (!stk.empty()) {
             bitree<TreeNode>* curTree = stk.top();
             stk.pop();
-            if (curTree == nullptr) {
-                seq.push_back(TreeSegment::SeqTag::RT);
-                continue;
-            }
             if (curTree->isLeave()) {
                 seq.push_back(TreeSegment::SeqTag::DATA);
                 tokens.push_back(curTree->getData()->data);
                 continue;
             }
-            seq.push_back(TreeSegment::SeqTag::LF);
-            stk.push(nullptr);
+            seq.push_back(TreeSegment::SeqTag::ST);
             stk.push(curTree->getRightChild());
             stk.push(curTree->getLeftChild());
         }
@@ -92,9 +104,8 @@ bitree<TreeNode>* decodeHuffmanTree(const TreeSegment::Seq& seq, const TreeSegme
     stk.push(2);
     for (auto tag: seq) {
         if (stk.empty()) break;
-        if (tag == TreeSegment::SeqTag::RT) continue;
         //
-        if (tag == TreeSegment::SeqTag::LF) {
+        if (tag == TreeSegment::SeqTag::ST) {
             auto newTree = new bitree<TreeNode>(new TreeNode(0));
             if (stk.top() == 2) {
                 curTree->setLeftChild(newTree);
@@ -116,7 +127,7 @@ bitree<TreeNode>* decodeHuffmanTree(const TreeSegment::Seq& seq, const TreeSegme
             if (tag == TreeSegment::SeqTag::DATA)
                 curTree = curTree->getFather();
         }
-        if (tag == TreeSegment::SeqTag::LF) {
+        if (tag == TreeSegment::SeqTag::ST) {
             stk.push(2);
         }
     }
