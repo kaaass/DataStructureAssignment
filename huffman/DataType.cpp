@@ -61,7 +61,6 @@ CodePoint &CodePoint::addByteHSB(Byte byte) {
 
 CodePoint &CodePoint::addBitHSB(Bit bit) {
     if (length % 8 == 0)
-        if (length / 8 > bytes.size())
             bytes.emplace_back(0);
     bytes[length / 8].val |= ((unsigned char) bit & 1) << (length % 8);
     length++;
@@ -86,7 +85,6 @@ std::vector<Byte> CodePoint::pack(const std::vector<CodePoint> &points, int &pad
         }
     }
     padInt = (8 - (cnt % 8)) % 8;
-    bytes.shrink_to_fit();
     return bytes;
 }
 
@@ -99,7 +97,6 @@ std::ostream &operator<<(std::ostream &out, const CodePoint &point) {
 
 CodePoint &CodePoint::addBitLSB(Bit bit) {
     if (length % 8 == 0)
-        if (length / 8 > bytes.size())
             bytes.emplace_back(0);
     for (int i = bytes.size() - 1; i > 0; i--) {
         bytes[i] = bytes[i] << 1;
