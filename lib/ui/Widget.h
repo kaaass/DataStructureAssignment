@@ -16,6 +16,8 @@ public:
      * inLoop trigger
      */
     virtual void inLoop() = 0;
+
+    virtual ~IWidget() = default;
 };
 
 #endif //DATA_STRCUT_ASSIGN_WIDGET_H

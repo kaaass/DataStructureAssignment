@@ -8,8 +8,8 @@
 
 using namespace std;
 
-void BaseScene::registerSubWidget(IWidget &widget) {
-    widgets.push_back(ref(widget));
+void BaseScene::registerSubWidget(IWidget *widget) {
+    widgets.push_back(widget);
 }
 
 void BaseScene::init() {
@@ -28,7 +28,7 @@ void BaseScene::inLoop() {
 
 void BaseScene::render() {
     for (auto widget: widgets) {
-        widget.get().render();
+        widget->render();
     }
     onRender();
 }
@@ -39,4 +39,10 @@ BaseScene::BaseScene() {
 
 std::string BaseScene::getTitle() {
     return "";
+}
+
+BaseScene::~BaseScene() {
+    for (auto widget: widgets) {
+        delete widget;
+    }
 }

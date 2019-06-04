@@ -113,3 +113,8 @@ Menu::Menu(int x, int y, std::vector<std::string> name, int def) : y(y), name(na
         this->x = x;
     }
 }
+
+std::string Menu::getItemText(int idx) {
+    assert(idx >= 0 && idx < name.size());
+    return name[idx];
+}

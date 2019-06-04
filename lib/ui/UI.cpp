@@ -22,13 +22,13 @@ UI *UI::instance = nullptr;
 void UI::init() {
     strFooter = "";
     // 默认场景
-    UI::startScene(*mainScene);
+    UI::startScene(mainScene);
 }
 
 bool UI::runSceneLoop() {
     if (SCENE_STACK.empty())
         return false;
-    BaseScene* nowScene = &SCENE_STACK.top().get();
+    BaseScene* nowScene = SCENE_STACK.top();
     nowScene->inLoop();
     return true;
 }
@@ -56,7 +56,7 @@ int UI::renderBreadCrumb() {
 void UI::renderScene() {
     if (SCENE_STACK.empty())
         return;
-    BaseScene* nowScene = &SCENE_STACK.top().get();
+    BaseScene* nowScene = SCENE_STACK.top();
     nowScene->render();
 }
 
@@ -116,9 +116,10 @@ void UI::setFooterUpdate(const string& footerStr) {
  * @param sceneId
  * @param title
  */
-void UI::startScene(BaseScene &scene) {
-    scene.init();
-    SCENE_STACK.push(ref(scene));
+void UI::startScene(BaseScene *scene) {
+    scene->init();
+    SCENE_STACK.push(scene);
+    render();
 }
 
 /**
@@ -127,7 +128,7 @@ void UI::startScene(BaseScene &scene) {
 void UI::endScene() {
     if (SCENE_STACK.size() == 1)
         return;
-    BaseScene *nowScene = &SCENE_STACK.top().get();
+    BaseScene *nowScene = SCENE_STACK.top();
     BreadCrumb_exit();
     SCENE_STACK.pop();
     delete nowScene;

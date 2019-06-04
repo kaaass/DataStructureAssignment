@@ -31,6 +31,8 @@ public:
 
     void setItemText(int idx, std::string text, bool reRender);
 
+    std::string getItemText(int idx);
+
     void setCur(int i);
 
     void setCurAndUpdate(int cur);

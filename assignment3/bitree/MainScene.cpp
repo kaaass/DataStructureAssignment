@@ -37,8 +37,8 @@ void MainScene::onCreate() {
      */
     curCul = MENU;
     tree = nullptr;
-    registerSubWidget(*dataMenu);
-    registerSubWidget(*dataView);
+    registerSubWidget(dataMenu);
+    registerSubWidget(dataView);
 }
 
 /**

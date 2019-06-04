@@ -15,9 +15,9 @@
  * 是否更改为享元模式？
  */
 class BaseScene implements IWidget {
-    std::vector<std::reference_wrapper<IWidget>> widgets;
+    std::vector<IWidget*> widgets;
 protected:
-    void registerSubWidget(IWidget &widget);
+    void registerSubWidget(IWidget *widget);
 
 public:
     BaseScene();
@@ -35,6 +35,8 @@ public:
     virtual void onInit() {}
     virtual void onLoop() {}
     virtual void onRender() {}
+
+    ~BaseScene() override;
 };
 
 #endif //DATA_STRCUT_ASSIGN_BASESCENE_H

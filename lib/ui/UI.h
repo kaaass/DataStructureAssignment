@@ -37,7 +37,7 @@ class UI {
     bool read_spec;
     int spec_key;
     std::vector<std::string> breadCrumb;
-    std::stack<std::reference_wrapper<BaseScene>> SCENE_STACK;
+    std::stack<BaseScene *> SCENE_STACK;
 
     UI() : read_spec(true), mainScene(nullptr) {}
 
@@ -52,6 +52,7 @@ class UI {
     int renderFooter();
 
     void title(const std::string &name);
+
 public:
     static void start();
 
@@ -67,7 +68,7 @@ public:
 
     static void setAppName(std::string);
 
-    static void footer(const std::string&);
+    static void footer(const std::string &);
 
     static UI &getInstance();
 
@@ -77,9 +78,9 @@ public:
 
     int getSpecKey();
 
-    void setFooterUpdate(const std::string&);
+    void setFooterUpdate(const std::string &);
 
-    void startScene(BaseScene &scene);
+    void startScene(BaseScene *scene);
 
     void endScene();
 
