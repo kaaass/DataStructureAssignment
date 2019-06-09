@@ -338,6 +338,16 @@ bool bitree<T>::isLeave() {
 }
 
 template<typename T>
+bool bitree<T>::hasLeftChild() {
+    return getLeftChild() != nullptr;
+}
+
+template<typename T>
+bool bitree<T>::hasRightChild() {
+    return getRightChild() != nullptr;
+}
+
+template<typename T>
 bool SeqTag<T>::isPlaceHolder() {
     return type == PlaceHolder;
 }

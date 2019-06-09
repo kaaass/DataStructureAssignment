@@ -57,9 +57,13 @@ public:
 
     bitree<T> *getLeftChild();
 
+    bool hasLeftChild();
+
     void setRightChild(bitree<T> *);
 
     bitree<T> *getRightChild();
+
+    bool hasRightChild();
 
     T* getData();
 

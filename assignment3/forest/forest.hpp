@@ -22,7 +22,7 @@ bitree<T> *forest<T>::buildTreeFromTrees(std::vector<bitree<T> *> trees) {
         Q.pop();
         if (curTree == nullptr) continue;
         newNode = new bitree<T>(curTree->getData());
-        father = father == nullptr ? ret: father;
+        father = father == nullptr ? ret : father;
         if (father->getLeftChild() == nullptr) {
             father->setLeftChild(newNode);
         } else {
@@ -35,6 +35,36 @@ bitree<T> *forest<T>::buildTreeFromTrees(std::vector<bitree<T> *> trees) {
         Q.push(make_pair(curTree->getRightChild(), newNode));
     }
     return ret;
+}
+
+template<typename T>
+std::vector<bitree<T> *> forest<T>::splitTrees(bitree<T> *tree) {
+    std::vector<bitree<T> *> trees;
+    queue<pair<bitree<T> *, bitree<T> *>> Q; // node, father
+    if (tree == nullptr)
+        return trees;
+    tree = tree->getLeftChild();
+    Q.push(make_pair(tree, nullptr));
+    while (!Q.empty()) {
+        bitree<T> *curTree = Q.front().first,
+                *father = Q.front().second,
+                *newNode = nullptr;
+        Q.pop();
+        if (curTree == nullptr) continue;
+        newNode = new bitree<T>(curTree->getData());
+        if (father == nullptr) {
+            trees.push_back(newNode);
+        } else {
+            if (!father->hasLeftChild()) { // At lf
+                father->setLeftChild(newNode);
+            } else { // At rt
+                father->setRightChild(newNode);
+            }
+        }
+        Q.push(make_pair(curTree->getLeftChild(), newNode));
+        Q.push(make_pair(curTree->getRightChild(), father));
+    }
+    return trees;
 }
 
 template<typename T>

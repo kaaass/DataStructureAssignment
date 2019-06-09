@@ -31,6 +31,36 @@ bitree<T> *buildTreeFromTrees(std::vector<bitree<T> *> trees) {
     return ret;
 }
 
+template<typename T>
+static std::vector<bitree<T> *> splitTrees(bitree<T> * tree) {
+    std::vector<bitree<T> *> trees;
+    queue<pair<bitree<T> *, bitree<T> *>> Q; // node, father
+    if (tree == nullptr)
+        return trees;
+    tree = tree->getLeftChild();
+    Q.push(make_pair(tree, nullptr));
+    while (!Q.empty()) {
+        bitree<T> * curTree = Q.front().first,
+            *father = Q.front().second,
+            *newNode = nullptr;
+        Q.pop();
+        if (curTree == nullptr) continue;
+        newNode = new bitree<T>(curTree->getData());
+        if (father == nullptr) {
+            trees.push_back(newNode);
+        } else {
+            if (!father->hasLeftChild()) { // At lf
+                father->setLeftChild(newNode);
+            } else { // At rt
+                father->setRightChild(newNode);
+            }
+        }
+        Q.push(make_pair(curTree->getLeftChild(), newNode));
+        Q.push(make_pair(curTree->getRightChild(), father));
+    }
+    return trees;
+}
+
 int main() {
     vector<SeqTag<int> > seq1 = {
             SeqTag<int>(1), SeqTag<int>(2), SeqTag<int>(4), SeqTag<int>(), SeqTag<int>(),
@@ -49,6 +79,10 @@ int main() {
     cout << trees[1]->toString() << endl;
     bitree<int> *ret = buildTreeFromTrees(trees);
     cout << ret->toString() << endl;
+    vector<bitree<int> *> recov = splitTrees(ret);
+    for (auto tree: recov) {
+        cout << tree->toString() << endl;
+    }
     /*int cur;
 
     cout << "****创建单链表****" << endl;
