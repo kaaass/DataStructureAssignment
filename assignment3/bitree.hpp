@@ -35,7 +35,7 @@ bitree<T>::~bitree() {
 template<typename T>
 vector<bitree<T> *> bitree<T>::find(T &dt) {
     vector<bitree<T> *> ret;
-    if (*data == dt) {
+    if (data != nullptr && *data == dt) {
         ret.push_back(this);
     }
     if (lf != nullptr) {

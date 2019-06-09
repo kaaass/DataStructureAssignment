@@ -24,7 +24,11 @@ public:
 
     std::string dlr();
 
+    std::string dlrNonRec();
+
     std::string lrd();
+
+    std::string lrdNonRec();
 
     std::string bfs();
 
@@ -50,7 +54,11 @@ struct multi_tree {
 
     static std::string dlr(multi_tree<T> *);
 
+    static std::string dlrNonRec(multi_tree<T> *);
+
     static std::string lrd(multi_tree<T> *);
+
+    static std::string lrdNonRec(multi_tree<T> *);
 };
 
 #include "forest.hpp"

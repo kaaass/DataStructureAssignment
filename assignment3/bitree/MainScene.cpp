@@ -182,7 +182,7 @@ void MainScene::inLoopMenu() {
                         UI::footer("树为空！");
                         break;
                     }
-                    UI::footer("先根遍历：" + bitree<int>::bfs(tree));
+                    UI::footer("层次遍历：" + bitree<int>::bfs(tree));
                     break;
                 case 8: // 查找结点及其父亲
                     if (tree == nullptr) {
@@ -209,6 +209,7 @@ void MainScene::inLoopMenu() {
                         break;
                     }
                     UI::footer("输入格式错误！");
+                    break;
                 case 9: // 删除子树
                     if (tree == nullptr) {
                         UI::footer("树为空！");

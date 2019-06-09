@@ -180,6 +180,32 @@ bool forest<T>::delSub(const T &data) {
 }
 
 template<typename T>
+std::string forest<T>::dlrNonRec() {
+    vector<bitree<T> *> trees = getTrees();
+    string ret;
+    for (auto btree: trees) {
+        auto multi = multi_tree<T>::lfSonRtBroTree(btree);
+        if (multi != nullptr) {
+            ret += multi_tree<T>::dlrNonRec(multi) + " ";
+        }
+    }
+    return ret;
+}
+
+template<typename T>
+std::string forest<T>::lrdNonRec() {
+    vector<bitree<T> *> trees = getTrees();
+    string ret;
+    for (auto btree: trees) {
+        auto multi = multi_tree<T>::lfSonRtBroTree(btree);
+        if (multi != nullptr) {
+            ret += multi_tree<T>::lrdNonRec(multi) + " ";
+        }
+    }
+    return ret;
+}
+
+template<typename T>
 multi_tree<T> *multi_tree<T>::lfSonRtBroTree(bitree<T> *tree) {
     multi_tree<T> *multi = nullptr;
     queue<pair<bitree<T> *, multi_tree<T> *>> Q; // node, father
@@ -239,6 +265,44 @@ bool multi_tree<T>::delSub(const T &dt) {
         flag |= son->delSub(dt);
     }
     return flag;
+}
+
+template<typename T>
+std::string multi_tree<T>::dlrNonRec(multi_tree<T> *root) {
+    string ret;
+    stack<multi_tree<T> *> stk;
+    stk.push(root);
+    while (!stk.empty()) {
+        multi_tree<T> *node = stk.top();
+        stk.pop();
+        if (node == nullptr) continue;
+        ret += bitree<T>::dataString(node->data) + " ";
+        for (int i = node->sons.size() - 1; i >= 0; i--) {
+            stk.push(node->sons[i]);
+        }
+    }
+    return ret;
+}
+
+template<typename T>
+std::string multi_tree<T>::lrdNonRec(multi_tree<T> *root) {
+    string ret;
+    stack<pair<multi_tree<T> *, int>> stk;
+    stk.push(make_pair(root, root->sons.size()));
+    while (!stk.empty()) {
+        pair<multi_tree<T> *, int> node = stk.top();
+        stk.pop();
+        if (node.first == nullptr) continue;
+        if (node.second == 0) {
+            ret += bitree<T>::dataString(node.first->data) + " ";
+        } else {
+            --node.second;
+            stk.push(node);
+            multi_tree<T> * sub = node.first->sons[node.first->sons.size() - node.second - 1];
+            stk.push(make_pair(sub, sub->sons.size()));
+        }
+    }
+    return ret;
 }
 
 #endif //DATA_STRCUT_ASSIGN_FOREST_HPP
