@@ -252,7 +252,7 @@ template<typename T>
 std::string bitree<T>::dataString(T *data) {
     ostringstream ss;
     if (data == nullptr)
-        return "";
+        return " ";
     ss << *data;
     return ss.str();
 }

@@ -22,6 +22,16 @@ public:
 
     std::vector<bitree<T> *> getTrees();
 
+    std::string dlr();
+
+    std::string lrd();
+
+    std::string bfs();
+
+    std::vector<bitree<T> *> find(T &);
+
+    bool delSub(const T &);
+
     ~forest();
 };
 
@@ -35,6 +45,8 @@ struct multi_tree {
     multi_tree() : data(nullptr) {}
 
     multi_tree(T *data) : data(data) {}
+
+    bool delSub(const T &data);
 
     static std::string dlr(multi_tree<T> *);
 
