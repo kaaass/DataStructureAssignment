@@ -17,21 +17,19 @@ bitree<T> *forest<T>::buildTreeFromTrees(std::vector<bitree<T> *> trees) {
         Q.push(make_pair(tr, nullptr));
     while (!Q.empty()) {
         bitree<T> *curTree = Q.front().first,
-            *father = Q.front().second,
-            *newNode;
+                *father = Q.front().second,
+                *newNode;
         Q.pop();
         if (curTree == nullptr) continue;
         newNode = new bitree<T>(curTree->getData());
-        if (father == nullptr) {
-            ret->setRightChild(newNode);
+        father = father == nullptr ? ret: father;
+        if (father->getLeftChild() == nullptr) {
+            father->setLeftChild(newNode);
         } else {
-            bitree<T> * rt = ret->find(father->getData())[0];
-            if (rt->getLeftChild() == nullptr) {
-                rt->setLeftChild(newNode);
-            } else {
-                while (rt->getRightChild() != nullptr) rt = rt->getRightChild();
-                rt->setRightChild(newNode);
-            }
+            bitree<T> *rt = father;
+            while (rt->getLeftChild() != nullptr) rt = rt->getLeftChild();
+            while (rt->getRightChild() != nullptr) rt = rt->getRightChild();
+            rt->setRightChild(newNode);
         }
         Q.push(make_pair(curTree->getLeftChild(), newNode));
         Q.push(make_pair(curTree->getRightChild(), newNode));
