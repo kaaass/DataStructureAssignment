@@ -10,7 +10,6 @@
 template<typename T>
 class forest {
     bitree<T> *tree;
-    int treeCnt;
 
     static bitree<T> *buildTreeFromTrees(std::vector<bitree<T> *>);
 
@@ -25,5 +24,23 @@ public:
 
     ~forest();
 };
+
+template<typename T>
+struct multi_tree {
+    T *data;
+    vector<multi_tree<T> *> sons;
+
+    static multi_tree *lfSonRtBroTree(bitree<T> *tree);
+
+    multi_tree() : data(nullptr) {}
+
+    multi_tree(T *data) : data(data) {}
+
+    static std::string dlr(multi_tree<T> *);
+
+    static std::string lrd(multi_tree<T> *);
+};
+
+#include "forest.hpp"
 
 #endif //DATA_STRCUT_ASSIGN_FOREST_H

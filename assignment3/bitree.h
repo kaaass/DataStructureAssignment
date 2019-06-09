@@ -37,10 +37,10 @@ class bitree {
 
     T *data;
 
-    static std::string dataString(T *);
-
     static std::string lfPad(std::string, std::string, int cnt);
 public:
+    static std::string dataString(T *);
+
     bitree() : father(nullptr), lf(nullptr), rt(nullptr), data(nullptr) {}
 
     bitree(T *data) : father(nullptr), lf(nullptr), rt(nullptr), data(data) {}

@@ -1,5 +1,6 @@
 #include <iostream>
 #include "../bitree.h"
+#include "forest.h"
 
 using namespace std;
 
@@ -82,7 +83,20 @@ int main() {
     vector<bitree<int> *> recov = splitTrees(ret);
     for (auto tree: recov) {
         cout << tree->toString() << endl;
+        multi_tree<int> * multi = multi_tree<int>::lfSonRtBroTree(tree);
     }
+
+    vector<SeqTag<int> > seq3 = {
+            SeqTag<int>(1), SeqTag<int>(2), SeqTag<int>(5), SeqTag<int>(), SeqTag<int>(6), SeqTag<int>(), SeqTag<int>(),
+            SeqTag<int>(3), SeqTag<int>(7), SeqTag<int>(), SeqTag<int>(8), SeqTag<int>(), SeqTag<int>(), SeqTag<int>(4),
+            SeqTag<int>(), SeqTag<int>(), SeqTag<int>()
+    };
+    int st3 = 0;
+    bitree<int> *tr = bitree<int>::buildFromEptSeq(seq3, st3);
+    cout << tr->toString() << endl;
+    multi_tree<int> * multi = multi_tree<int>::lfSonRtBroTree(tr);
+    cout << multi_tree<int>::dlr(multi) << endl;
+    cout << multi_tree<int>::lrd(multi) << endl;
     /*int cur;
 
     cout << "****创建单链表****" << endl;

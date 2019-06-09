@@ -74,18 +74,61 @@ void forest<T>::addTrees(bitree<T> *tr) {
     vector<bitree<T> *> trees = getTrees();
     trees.push_back(tr);
     tree = buildTreeFromTrees(trees);
-    return vector<bitree<T> *>();
 }
 
 template<typename T>
 std::vector<bitree<T> *> forest<T>::getTrees() {
-    // TODO
-    return vector<bitree<T> *>();
+    return splitTrees(tree);
 }
 
 template<typename T>
 forest<T>::~forest() {
     delete tree;
+}
+
+template<typename T>
+multi_tree<T> *multi_tree<T>::lfSonRtBroTree(bitree<T> *tree) {
+    multi_tree<T> * multi = nullptr;
+    queue<pair<bitree<T> *, multi_tree<T> *>> Q; // node, father
+    if (tree == nullptr)
+        return nullptr;
+    Q.push(make_pair(tree, nullptr));
+    while (!Q.empty()) {
+        bitree<T> * curTree = Q.front().first;
+        multi_tree<T> *father = Q.front().second,
+                *newNode = nullptr;
+        Q.pop();
+        if (curTree == nullptr) continue;
+        newNode = new multi_tree<T>(curTree->getData());
+        if (father == nullptr) {
+            multi = newNode;
+        } else {
+            father->sons.push_back(newNode);
+        }
+        Q.push(make_pair(curTree->getLeftChild(), newNode));
+        Q.push(make_pair(curTree->getRightChild(), father));
+    }
+    return multi;
+}
+
+template<typename T>
+std::string multi_tree<T>::dlr(multi_tree<T> *tree) {
+    if (tree == nullptr) return "";
+    string ret = bitree<T>::dataString(tree->data);
+    for (auto son: tree->sons) {
+        ret += " " + dlr(son);
+    }
+    return ret + " ";
+}
+
+template<typename T>
+std::string multi_tree<T>::lrd(multi_tree<T> *tree) {
+    if (tree == nullptr) return "";
+    string ret;
+    for (auto son: tree->sons) {
+        ret += " " + lrd(son);
+    }
+    return ret + " " + bitree<T>::dataString(tree->data);
 }
 
 #endif //DATA_STRCUT_ASSIGN_FOREST_HPP
