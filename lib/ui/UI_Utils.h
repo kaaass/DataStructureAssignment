@@ -8,7 +8,7 @@
 #include "../util/StringUtil.h"
 
 #define extends : public
-#define implements : public
+#define implements : virtual public
 
 #ifdef _WIN32
 #include <conio.h>
