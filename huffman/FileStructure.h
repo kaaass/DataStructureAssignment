@@ -75,7 +75,7 @@ public:
 
     static std::vector<Byte> packToBlock(const std::vector<Byte> &tagBytes, const std::vector<Byte> &tokenBytes);
 
-    static int writeRawToBuf(FILE *buf, const Seq &tagSeq, const Tokens &tokens);
+    static BIndex writeRawToBuf(FILE *buf, const Seq &tagSeq, const Tokens &tokens);
 
     static std::pair<TreeSegment::Seq, TreeSegment::Tokens> readFromBuf(FILE *buf);
 };
@@ -91,7 +91,7 @@ class DataSegment {
 public:
     static std::vector<Byte> splitBlocks(const std::vector<Byte> &rawBytes, int &blockCnt);
 
-    static int writeToBuf(FILE *buf, const std::vector<Byte> &blocked);
+    static BIndex writeToBuf(FILE *buf, const std::vector<Byte> &blocked);
 
     static std::vector<Byte> readRawFromBuf(FILE *buf, int blockCnt);
 };
@@ -107,7 +107,7 @@ class DataPart {
 public:
     DataPart() : padCnt(0b0) {}
 
-    void writeToBuf(FILE *buf);
+    BIndex writeToBuf(FILE *buf);
 
     bool readFromBuf(FILE *buf);
 

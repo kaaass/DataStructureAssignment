@@ -105,8 +105,6 @@ int UI::getSpecKey() {
  * @param footerStr 传入字面字符串常量
  */
 void UI::setFooterUpdate(const string& footerStr) {
-    if (footerStr.empty())
-        return;
     this->strFooter = footerStr;
     renderFooter();
 }

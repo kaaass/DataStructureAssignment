@@ -126,8 +126,8 @@ void Table::render() {
 
 void Table::renderToggle(int orgCur) {
     Position pos(x, y + CON_TOP);
-    if (orgCur >= 0) { // orgCur应位于表内
-        TableLine data = columns[orgCur];
+    if (orgCur >= 1) { // orgCur应位于表内
+        TableLine data = columns[orgCur - 1];
         pos.y = y + 3 + orgCur - top + CON_TOP;
         UI_moveCursor(pos);
         printLine(data.content, -1);

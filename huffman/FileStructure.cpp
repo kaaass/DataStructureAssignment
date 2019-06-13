@@ -37,7 +37,7 @@ std::vector<Byte> DataSegment::splitBlocks(const std::vector<Byte> &rawBytes, in
     return ret;
 }
 
-int DataSegment::writeToBuf(FILE *buf, const std::vector<Byte> &blocked) {
+BIndex DataSegment::writeToBuf(FILE *buf, const std::vector<Byte> &blocked) {
     for (auto byte: blocked)
         byte.writeToBuf(buf);
     return blocked.size();
@@ -121,14 +121,14 @@ std::vector<Byte> TreeSegment::packToBlock(const std::vector<Byte> &tagBytes, co
     return ret;
 }
 
-int
+BIndex
 TreeSegment::writeRawToBuf(FILE *buf, const Seq &tagSeq, const Tokens &tokens) {
     auto seqBytes = packSeq(tagSeq);
     auto tokenBytes = packTokens(tokens);
     std::vector<Byte> block = packToBlock(seqBytes, tokenBytes);
     for (auto byte: block)
         byte.writeToBuf(buf);
-    return 1;
+    return block.size();
 }
 
 std::pair<TreeSegment::Seq, TreeSegment::Tokens> TreeSegment::readFromBuf(FILE *buf) {
@@ -228,17 +228,19 @@ void DataPart::setPadCnt(UChar cnt) {
     DataPart::padCnt = cnt;
 }
 
-void DataPart::writeToBuf(FILE *buf) {
+BIndex DataPart::writeToBuf(FILE *buf) {
     int blockCnt;
+    BIndex size = 5;
     // Blocking data
     auto blocked = DataSegment::splitBlocks(pRawData, blockCnt);
     // Write header
     DataPartHeader dataPartHeader(padCnt, blockCnt);
     dataPartHeader.writeToBuf(buf);
     // Write tree
-    TreeSegment::writeRawToBuf(buf, pSeq, pTokens);
+    size += TreeSegment::writeRawToBuf(buf, pSeq, pTokens);
     // Write blocks
-    DataSegment::writeToBuf(buf, blocked);
+    size += DataSegment::writeToBuf(buf, blocked);
+    return size;
 }
 
 bool DataPart::readFromBuf(FILE *buf) {

@@ -26,7 +26,8 @@ std::vector<Byte> compressBufWithTree(FILE *buf, bitree<TreeNode> *tree, int &pa
     return CodePoint::pack(ret, padCnt);
 }
 
-bool compressAndSave(FILE *buf, FILE *writeBuf) {
+double compressAndSave(FILE *buf, FILE *writeBuf) {
+    BIndex compSize = 14;
     int partCnt = 1; // Currently, no multi-file supporting
     // Header
     HuffmanHeader header(partCnt);
@@ -39,7 +40,7 @@ bool compressAndSave(FILE *buf, FILE *writeBuf) {
     rewind(buf);
     auto *tree = buildHuffman(counts);
     if (tree == nullptr)
-        return false;
+        return -1;
     auto treeData = encodeHuffmanTree(tree);
     dataPart.setSeq(treeData.first);
     dataPart.setTokens(treeData.second);
@@ -48,8 +49,10 @@ bool compressAndSave(FILE *buf, FILE *writeBuf) {
     auto bytes = compressBufWithTree(buf, tree, padCnt, fileSize);
     dataPart.setRawData(bytes);
     dataPart.setPadCnt(padCnt);
-    dataPart.writeToBuf(writeBuf);
-    return true;
+    compSize += dataPart.writeToBuf(writeBuf);
+    // Calc compress rate
+    double rate = (double) compSize / (double) fileSize;
+    return rate;
 }
 
 bool decompressRawAndWrite(FILE *writeBuf, bitree<TreeNode> *tree, const std::vector<Byte> &data, int padCnt) {

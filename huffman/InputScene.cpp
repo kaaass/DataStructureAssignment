@@ -89,11 +89,11 @@ void InputScene::onLoop() {
                         }
                         UI::footer("正在压缩，请稍候...");
                         int64_t stTime = getCurrentTime();
-                        compressAndSave(source, dest);
+                        double rate = compressAndSave(source, dest) * 100;
                         fflush(dest);
                         int64_t edTime = getCurrentTime();
                         double cost = (double) (edTime - stTime) / 1000;
-                        UI::footer("压缩文件完成，用时" + doubleString(cost) + "秒");
+                        UI::footer("压缩文件完成，用时" + doubleString(cost) + "秒，压缩率：" + doubleString(rate) + "%");
                     } else {
                         FILE *source = fopen(sourcePath.c_str(), "rb");
                         if (source == nullptr) {

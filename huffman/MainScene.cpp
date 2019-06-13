@@ -4,6 +4,7 @@
 #include <ui/UI_Utils.h>
 #include "MainScene.h"
 #include "InputScene.h"
+#include "StatScene.h"
 
 using namespace std;
 
@@ -14,6 +15,7 @@ void MainScene::onCreate() {
      * 操作选单
      */
     vector<string> menuName = {
+            "  频率统计",
             "  压缩文件",
             "  解压文件"
     };
@@ -42,9 +44,20 @@ void MainScene::onLoop() {
         if (UI::specKey() == KEY_ENTER) {
             switch (opMenu->getCur()) {
                 case 0:
+                {
+                    string path = UI_inputString("请输入路径：");
+                    FILE *source = fopen(path.c_str(), "rb");
+                    if (source == nullptr) {
+                        UI::footer("输入路径错误，请检查后再输入！");
+                        break;
+                    }
+                    UI::getInstance().startScene(new StatScene(source));
+                    break;
+                }
+                case 1:
                     UI::getInstance().startScene(new InputScene(true));
                     break;
-                case 1:
+                case 2:
                     UI::getInstance().startScene(new InputScene(false));
                     break;
             }
