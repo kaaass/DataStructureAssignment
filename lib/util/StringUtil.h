@@ -28,4 +28,12 @@ std::string mergeBlanks(const std::string &str);
 
 int stringToInt(const std::string &);
 
+template<typename T>
+std::string join(std::vector<T> strs, std::string spl);
+
+template<typename T>
+std::string toString(T data);
+
+#include "StringUtil.hpp"
+
 #endif //const FRESHMAN_PR&OJ_C_STRINGUTIL_H

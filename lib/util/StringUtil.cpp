@@ -9,6 +9,7 @@
 #ifdef _WIN32
 
 #include <stringapiset.h>
+#include <sstream>
 
 #endif // _WIN32
 
@@ -64,11 +65,7 @@ std::vector<std::string> splitLines(std::string str) {
 }
 
 std::string unLines(std::vector<std::string> strs) {
-    std::string ret;
-    for (auto line: strs) {
-        ret += line + "\n";
-    }
-    return ret.substr(0, ret.size() - 1);
+    return join(std::move(strs), "\n");
 }
 
 std::string mergeBlanks(const std::string& str) {
