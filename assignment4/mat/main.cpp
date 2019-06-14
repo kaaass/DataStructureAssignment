@@ -3,13 +3,18 @@
 //
 
 #include "Graph.h"
+#include "MainScene.h"
 #include <iostream>
 #include <util/StringUtil.h>
+#include <ui/UI.h>
 
 using namespace std;
 
 int main() {
-    Graph graph(6);
+    UI::setAppName("图：邻接矩阵");
+    UI::setMainScene(new MainScene);
+    UI::start();
+    /*Graph graph(6);
     graph.add(1, 2, 3);
     graph.add(1, 3, 4);
     graph.add(2, 3, 2);
@@ -28,6 +33,6 @@ int main() {
     graph.floyd();
     cout << join(graph.findPath(3, 6), ", ") << endl;
     cout << graph.prim() << endl;
-    cout << graph.kruskal() << endl;
+    cout << graph.kruskal() << endl;*/
     return 0;
 }

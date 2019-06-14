@@ -24,7 +24,7 @@ int *Graph::operator[](int ind) {
 }
 
 int Graph::node(int u, int v) {
-    return (*this)[u][v];
+    return (*this)(u)[v];
 }
 
 vector<int> Graph::bfn(int st, bool *vis) {
@@ -95,9 +95,12 @@ void Graph::floyd() {
     Graph &G = *this;
     if (path == nullptr)
         path = new int[(n + 1) * (n + 1)];
-    for (int i = 1; i <= n; i++)
-        for (int j = 1; j <= n; j++)
+    for (int i = 1; i <= n; i++) {
+        for (int j = 1; j <= n; j++) {
             path[i * (n + 1) + j] = i != j && G[i][j] < INF ? i : -1;
+            G[i][j] = G(i)[j];
+        }
+    }
     // Run floyd
     for (int k = 1; k <= n; k++) {
         for (int i = 1; i <= n; i++) {
@@ -199,4 +202,8 @@ Graph::~Graph() {
     delete[] raw;
     if (path != nullptr)
         delete[] path;
+}
+
+int Graph::getN() const {
+    return n;
 }

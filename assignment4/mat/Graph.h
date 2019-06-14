@@ -20,12 +20,13 @@ struct Edge {
 };
 
 class Graph {
-    static const int INF;
 
     int *mat, *raw;
     int n;
     int *path;
 public:
+    static const int INF;
+
     Graph(int n);
 
     void add(int u, int v, int w);
@@ -55,6 +56,8 @@ public:
     int kruskal();
 
     ~Graph();
+
+    int getN() const;
 };
 
 
