@@ -36,13 +36,14 @@ int LGraph::removeNode(int node) {
     for (int i = 1; i <= edges.size(); i++)
         if (delPoints.count(i) <= 0)
             removeEdge(i, node);
-    return node;
+    return 1;
 }
 
 int LGraph::removeEdge(int u, int v) {
     for (auto it = edges[u].begin(); it != edges[u].end();) {
         if (it->to == v) {
             edges[u].erase(it++);
+            return 1;
         } else it++;
     }
     return 0;
@@ -69,14 +70,11 @@ vector<int> LGraph::bfn() {
     return ret;
 }
 
-#include <iostream>
-
 vector<int> LGraph::dfn() {
     bool vis[N + 1];
     vector<int> ret;
     for (int i = 1; i <= N; i++) vis[i] = false;
     for (int i = 1; i <= N; i++) {
-        cout << i << endl;
         if (delPoints.count(i) <= 0 && !vis[i]) {
             vector<int> ts = dfn(i, vis);
             ret.insert(ret.end(), ts.begin(), ts.end());
@@ -142,20 +140,19 @@ pair<int, vector<int>> LGraph::dijkstra(int u, int v) {
         }
     }
     vector<int> ret;
-    int k = v;
-    ret.push_back(v);
-    while ((k = path[k]) != u) {
-        ret.insert(ret.begin(), k);
+    if (path[v] > 0) {
+        int k = v;
+        ret.push_back(v);
+        while ((k = path[k]) != u) {
+            ret.insert(ret.begin(), k);
+        }
+        ret.insert(ret.begin(), u);
     }
-    ret.insert(ret.begin(), u);
     return make_pair(dis[v], ret);
 }
 
 void LGraph::floyd() {
-    pMat = new Graph(edges.size());
-    for (const auto& E: edges)
-        for (auto e: E)
-            pMat->addSingle(e.from, e.to, e.w);
+    pMat = getMat();
     pMat->floyd();
 }
 
@@ -255,4 +252,12 @@ vector<int> LGraph::criticalPath() {
 
 int LGraph::pathLength(int u, int v) {
     return (*pMat)[u][v];
+}
+
+Graph *LGraph::getMat() {
+    auto *g = new Graph(N);
+    for (const auto& E: edges)
+        for (auto e: E)
+            g->addSingle(e.from, e.to, e.w);
+    return g;
 }

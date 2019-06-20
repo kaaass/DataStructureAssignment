@@ -64,6 +64,8 @@ public:
 
     vector<int> criticalPath();
 
+    Graph * getMat();
+
 private:
     Graph *pMat;
 };
