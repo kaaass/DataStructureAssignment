@@ -21,7 +21,8 @@ void BaseScene::init() {
 
 void BaseScene::inLoop() {
     for (auto widget: widgets) {
-        // widget.get().inLoop();
+        if (widget->isEnabled())
+            widget->inLoop();
     }
     onLoop();
 }

@@ -19,25 +19,23 @@ struct Edge {
     }
 };
 
-class Graph {
+class LGraph {
 
-    int *mat, *raw;
-    int n;
-    int *path;
+    vector<vector<Edge>> edges;
 public:
-    static const int INF;
-
-    Graph(int n);
+    LGraph(int n) : edges(n) {}
 
     void add(int u, int v, int w);
 
-    vector<int> adjacent(int node);
-
-    int *operator[](int ind);
-
-    int *operator()(int ind);
-
     int edge(int u, int v);
+
+    int insertNode();
+
+    int removeNode(int node);
+
+    int removeEdge(int u, int v);
+
+    vector<int> adjacent(int node);
 
     vector<int> bfn();
 
@@ -47,17 +45,13 @@ public:
 
     vector<int> dfn(int st, bool *vis);
 
+    pair<int, vector<int>> dijkstra(int u, int v);
+
     void floyd();
 
     vector<int> findPath(int u, int v);
 
-    int prim();
-
-    int kruskal();
-
-    ~Graph();
-
-    int getN() const;
+    vector<int> sort();
 };
 
 

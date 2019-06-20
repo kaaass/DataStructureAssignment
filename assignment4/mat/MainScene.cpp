@@ -140,7 +140,7 @@ void MainScene::inLoopMenu() {
                         u = num;
                         if (UI_inputInt(&num, "请输入终点：")) {
                             v = num;
-                            w = graph->node(u, v);
+                            w = graph->edge(u, v);
                             if (w < Graph::INF) {
                                 UI::footer("边权值：" + toString(w));
                             } else {

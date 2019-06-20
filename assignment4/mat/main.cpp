@@ -27,7 +27,7 @@ int main() {
     graph.add(5, 6, 2);
 
     cout << join(graph.adjacent(3), ", ") << endl;
-    cout << graph.node(3, 1) << endl;
+    cout << graph.edge(3, 1) << endl;
     cout << join(graph.dfn(), ", ") << endl;
     cout << join(graph.bfn(), ", ") << endl;
     graph.floyd();

@@ -6,7 +6,11 @@
 #define DATA_STRCUT_ASSIGN_WIDGET_H
 
 class IWidget {
+
+    bool enabled;
 public:
+    IWidget() : enabled(false) {}
+
     /**
      * render trigger
      */
@@ -18,6 +22,14 @@ public:
     virtual void inLoop() = 0;
 
     virtual ~IWidget() = default;
+
+    void setEnabled(bool enabled) {
+        IWidget::enabled = enabled;
+    }
+
+    bool isEnabled() const {
+        return enabled;
+    }
 };
 
 #endif //DATA_STRCUT_ASSIGN_WIDGET_H

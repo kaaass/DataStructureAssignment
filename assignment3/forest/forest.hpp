@@ -12,7 +12,7 @@ using namespace std;
 template<typename T>
 bitree<T> *forest<T>::buildTreeFromTrees(std::vector<bitree<T> *> trees) {
     auto *ret = new bitree<T>;
-    queue<pair<bitree<T> *, bitree<T> *>> Q; // node, father
+    queue<pair<bitree<T> *, bitree<T> *>> Q; // edge, father
     for (auto tr : trees)
         Q.push(make_pair(tr, nullptr));
     while (!Q.empty()) {
@@ -43,7 +43,7 @@ bitree<T> *forest<T>::buildTreeFromTrees(std::vector<bitree<T> *> trees) {
 template<typename T>
 std::vector<bitree<T> *> forest<T>::splitTrees(bitree<T> *tree) {
     std::vector<bitree<T> *> trees;
-    queue<pair<bitree<T> *, bitree<T> *>> Q; // node, father
+    queue<pair<bitree<T> *, bitree<T> *>> Q; // edge, father
     if (tree == nullptr)
         return trees;
     tree = tree->getLeftChild();
@@ -208,7 +208,7 @@ std::string forest<T>::lrdNonRec() {
 template<typename T>
 multi_tree<T> *multi_tree<T>::lfSonRtBroTree(bitree<T> *tree) {
     multi_tree<T> *multi = nullptr;
-    queue<pair<bitree<T> *, multi_tree<T> *>> Q; // node, father
+    queue<pair<bitree<T> *, multi_tree<T> *>> Q; // edge, father
     if (tree == nullptr)
         return nullptr;
     Q.push(make_pair(tree, nullptr));

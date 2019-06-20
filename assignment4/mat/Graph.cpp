@@ -23,7 +23,7 @@ int *Graph::operator[](int ind) {
     return &mat[ind * (n + 1)];
 }
 
-int Graph::node(int u, int v) {
+int Graph::edge(int u, int v) {
     return (*this)(u)[v];
 }
 
