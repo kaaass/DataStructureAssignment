@@ -9,16 +9,6 @@
 
 using namespace std;
 
-struct Edge {
-    int from;
-    int to;
-    int w;
-
-    bool operator<(const Edge &e) const {
-        return w < e.w;
-    }
-};
-
 class Graph {
 
     int *mat, *raw;
@@ -30,6 +20,8 @@ public:
     Graph(int n);
 
     void add(int u, int v, int w);
+
+    void addSingle(int u, int v, int w);
 
     vector<int> adjacent(int node);
 

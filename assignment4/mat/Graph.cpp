@@ -10,13 +10,26 @@
 #include <set>
 #include <algorithm>
 
+struct Edge {
+    int from;
+    int to;
+    int w;
+
+    bool operator<(const Edge &e) const {
+        return w < e.w;
+    }
+};
+
 const int Graph::INF = 0x3f3f3f3f;
 
 void Graph::add(int u, int v, int w) {
+    addSingle(u, v, w);
+    addSingle(v, u, w);
+}
+
+void Graph::addSingle(int u, int v, int w) {
     (*this)[u][v] = w;
-    (*this)[v][u] = w;
     (*this)(u)[v] = w;
-    (*this)(v)[u] = w;
 }
 
 int *Graph::operator[](int ind) {

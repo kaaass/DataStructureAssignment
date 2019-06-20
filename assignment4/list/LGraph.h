@@ -2,10 +2,12 @@
 // Created by guyis on 2019/6/14.
 //
 
-#ifndef DATA_STRCUT_ASSIGN_GRAPH_H
-#define DATA_STRCUT_ASSIGN_GRAPH_H
+#ifndef DATA_STRCUT_ASSIGN_LGRAPH_H
+#define DATA_STRCUT_ASSIGN_LGRAPH_H
 
 #include <vector>
+#include <set>
+#include "../mat/Graph.h"
 
 using namespace std;
 
@@ -14,16 +16,21 @@ struct Edge {
     int to;
     int w;
 
+    Edge(int u, int v, int w): from(u), to(v), w(w) {}
+    Edge(int v, int w): from(0), to(v), w(w) {}
+
     bool operator<(const Edge &e) const {
         return w < e.w;
     }
 };
 
 class LGraph {
+    int N;
 
     vector<vector<Edge>> edges;
+    set<int> delPoints;
 public:
-    LGraph(int n) : edges(n) {}
+    LGraph(int n) : edges(n + 1), N(n), pMat(nullptr) {}
 
     void add(int u, int v, int w);
 
@@ -51,8 +58,15 @@ public:
 
     vector<int> findPath(int u, int v);
 
-    vector<int> sort();
+    int pathLength(int u, int v);
+
+    vector<Edge> sort();
+
+    vector<int> criticalPath();
+
+private:
+    Graph *pMat;
 };
 
 
-#endif //DATA_STRCUT_ASSIGN_GRAPH_H
+#endif //DATA_STRCUT_ASSIGN_LGRAPH_H
