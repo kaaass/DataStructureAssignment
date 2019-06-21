@@ -11,7 +11,7 @@
 using namespace std;
 
 int main() {
-    UI::setAppName("图：邻接表");
+    UI::setAppName("ͼ���ڽӱ�");
     UI::setMainScene(new MainScene);
     UI::start();
     /*LGraph graph(7);

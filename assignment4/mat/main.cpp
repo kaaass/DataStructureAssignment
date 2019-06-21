@@ -11,7 +11,7 @@
 using namespace std;
 
 int main() {
-    UI::setAppName("å›¾ï¼šé‚»æ¥çŸ©é˜µ");
+    UI::setAppName("Í¼£ºÁÚ½Ó¾ØÕó");
     UI::setMainScene(new MainScene);
     UI::start();
     /*Graph graph(6);
